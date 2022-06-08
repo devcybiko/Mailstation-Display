@@ -31,7 +31,7 @@ The pinouts are mostly correct, but there is no information on the timing of the
 These functions are serviceable, but I've found them to be a bit slow. I offer them more as documentation on how to access and update the LCD, rather than production software.
 
 * Low-level functions
-    * lcd.setup(delay=0, isBuffered=True) - initializes the RPi GPIO pins. Delay allows a used delay after control pins are pulled low (to allow them to settle in). isBuffered turns off/on buffering.
+    * lcd.setup(delay=0, isBuffered=True) - initializes the RPi GPIO pins. Delay allows a micro-second (usec) delay after control pins are pulled low (to allow them to settle in). isBuffered turns off/on buffering.
     * lcd.teardown() - restore the RPI GPIO pins
     * lcd.select_column(col) - selects a column (0-39) for read/write
     * lcd.read_byte(row, col=None) - reads a byte from the display (col is optional if lcd.select_column was just called)
