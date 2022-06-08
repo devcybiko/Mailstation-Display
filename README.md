@@ -52,13 +52,11 @@ These functions are serviceable, but I've found them to be a bit slow. I offer t
 
 ## Hardware
 
-The LCD display is organized as 320x128 pixels. It is actually 2 LCDs of 160x128 pixels glued together. The power inputs are 5VDC.The 8-bit Data, 8-bit Address, and control pins operate at TTL levels (5VDC). There is also a pin for the contrast which is controlled by a 10K-ohn variable resistor. (The markings on it say 1MEG, but that's incorrect. Ohm-meter readings indicate it runs up to 10K). The variable resister is tied to ground and the other end is tied to Pin 2 of the LCD.
+The LCD display is organized as 320x128 pixels. It is actually 2 LCDs of 160x128 pixels glued together. The power inputs are 5VDC. The 8-bit Data, 8-bit Address, and control pins operate at TTL levels (5VDC). There is also a pin for the contrast which is controlled by a 10K-ohm variable resistor. (The markings on it say 1MEG, but that's incorrect. Ohm-meter readings indicate it runs up to 10K). The variable resistor is tied to ground and the other end is tied to Pin 2 of the LCD.
 
 ### Memory
 
-Internally, the device has 256 x 40 x 8-bits of memory for a total of 10,240 bytes. It's all completely addressable for both read and write. The display starts at address 0x38 and continues through 0xB8. As has been posted in `kbembedded`'s Wiki, one might use the addtional memory for storage.
-
-I suspect that the actual memory is closer to 8192 bytes. Since there are 2 displays of 160x128, the total memory necessary is 160 x 128 / 8 = 2560 bytes per panel. Rounding up to the nearest power of two would be 4096 bytes each. And then multiply by two panels yeilds 8192 bytes.
+Internally, the device has 256 x 40 x 8-bits of memory for a total of 10,240 bytes. It's all completely addressable for both read and write. The display starts at address 0x38 and continues through 0xB8. As has been posted in `kbembedded`'s Wiki, one might use the additional memory for storage.
 
 ### Pin out
 
@@ -143,9 +141,13 @@ I noticed that when I did this the display would be corrupted with random data. 
 
 Next, all the enable pins must be pulled high. I experimented with leaving the `LEFT_SEL_` and `RIGHT_SEL_` low but that led to corrupted display reads and writes.
 
+You can see the process in `lcd.py#select_column()`.
+
 ### `WRITE_`
 
 The `WRITE_` select is pulled low once the column is selected and the A0-7 and D0-7 pins are set. It must be preceded by one of the `LEFT_SEL_` or `RIGHT_SEL_` pins being pulled low. Then all pins are pulled high and the data is written.
+
+You can see the process in `lcd.py#write_byte()`.
 
 #### Reading the display
 
@@ -154,6 +156,8 @@ Since the display is backed by its own memory, it can be read as well as written
 This is accomplished by 'latching' in the column with `COL_ADD_SEL_` and then setting the A0-7 bits, setting the GPIO bits for D0-7 to inputs, than pulling the `LEFT_SEL_` or `RIGHT_SEL_` pins low. I then read the D0-7 bits, pulled `COL_SEL_` and the `LEFT_SEL_` and `RIGHT_SEL_` bits high.
 
 See the section on `Spurious Display Read / Write Issues`. Ultimately, I used a buffering scheme that allowed reading from the RPi / Python memory rather than the display. It proved to be much more accurate.
+
+You can see the process in `lcd.py#read_byte()`
 
 ### Timing and DELAY
 
