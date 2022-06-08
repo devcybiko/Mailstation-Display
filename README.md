@@ -153,7 +153,7 @@ You can see the process in `lcd.py#write_byte()`.
 
 Since the display is backed by its own memory, it can be read as well as written to. This was necssary for such things as line drawing and rendering text.
 
-This is accomplished by 'latching' in the column with `COL_ADD_SEL_` and then setting the A0-7 bits, setting the GPIO bits for D0-7 to inputs, than pulling the `LEFT_SEL_` or `RIGHT_SEL_` pins low. I then read the D0-7 bits, pulled `COL_SEL_` and the `LEFT_SEL_` and `RIGHT_SEL_` bits high.
+This is accomplished by 'latching' in the column with `COL_ADD_SEL_` and then setting the A0-7 bits, setting the GPIO bits for D0-7 to inputs, then pulling the `LEFT_SEL_` or `RIGHT_SEL_` pins low. I then read the D0-7 bits, pulled `COL_SEL_` and the `LEFT_SEL_` and `RIGHT_SEL_` bits high, and restore the D0-7 GPIO pins to outputs.
 
 See the section on `Spurious Display Read / Write Issues`. Ultimately, I used a buffering scheme that allowed reading from the RPi / Python memory rather than the display. It proved to be much more accurate.
 
