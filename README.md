@@ -1,6 +1,7 @@
-0x00# Mailstation-Display
--Greg Smith
--6/8/2022
+# Mailstation-Display
+
+- Greg Smith
+- 6/8/2022
 
 ## Intro
 
