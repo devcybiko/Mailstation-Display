@@ -5,7 +5,7 @@
 
 ## Intro
 
-The Mailstation is a late 1990s device developed for the express purpose of sengind emails over telephone lines. More info here: [Mailstation on Wikipedia](https://en.wikipedia.org/wiki/Cidco_MailStation)
+The Mailstation is a late 1990s device developed for the express purpose of sending emails over telephone lines. More info here: [Mailstation on Wikipedia](https://en.wikipedia.org/wiki/Cidco_MailStation)
 
 ![Cidco Mailstation model DET1](./pix/mailstation.jpg "Cidco Mailstation model DET1")
 
