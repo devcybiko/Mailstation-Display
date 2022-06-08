@@ -143,7 +143,7 @@ Next, all the enable pins must be pulled high. I experimented with leaving the `
 
 ### `WRITE_`
 
-The `WRITE_` select is pulled low once the column is selected and the A0-7 and D0-7 pins are set. It must be preceded by the `COL_ADD_SEL_` and one of the `LEFT_SEL_` or `RIGHT_SEL_` pins being pulled low. Then all pins are pulled high and the data is written.
+The `WRITE_` select is pulled low once the column is selected and the A0-7 and D0-7 pins are set. It must be preceded by one of the `LEFT_SEL_` or `RIGHT_SEL_` pins being pulled low. Then all pins are pulled high and the data is written.
 
 #### Reading the display
 
@@ -155,7 +155,7 @@ See the section on `Spurious Display Read / Write Issues`. Ultimately, I used a 
 
 ### Timing and DELAY
 
-The `lcd.setup()` function allows you to set a delay (in microseconds) between the time the enable pins are pulled low and the pulled high again. This worked well for debugging, but once I had other timing issues worked out, the delay had no advantages towards preventing display corruption and spurious writes to the display.
+The `lcd.setup()` function allows you to set a delay (in microseconds) between the time the enable pins are pulled low and then pulled high again. This worked well for debugging, but once I had other timing issues worked out, the delay had no advantages towards preventing display corruption and spurious writes to the display.
 
 ## Spurious Display Read / Write Issues
 
