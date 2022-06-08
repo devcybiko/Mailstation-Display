@@ -48,6 +48,7 @@ These functions are serviceable, but I've found them to be a bit slow. I offer t
     * lcd.defer(True) - begins buffering in the background. All display operations are written / read from internal RPi / Python memory.
     * lcd.defer(False) - flushes the internal RPi / Python buffer to the display in one operation.
 
+![First Display Success](./pix/display-01.jpg "LCD Shows Monalisa Smile")
 ## Hardware
 
 The LCD display is organized as 320x128 pixels. It is actually 2 LCDs of 160x128 pixels glued together. The power inputs are 5VDC.The 8-bit Data, 8-bit Address, and control pins operate at TTL levels (5VDC). There is also a pin for the contrast which is controlled by a 10K-ohn variable resistor. (The markings on it say 1MEG, but that's incorrect. Ohm-meter readings indicate it runs up to 10K). The variable resister is tied to ground and the other end is tied to Pin 2 of the LCD.
