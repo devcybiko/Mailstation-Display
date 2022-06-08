@@ -146,11 +146,51 @@ Next, all the enable pins must be pulled high. I experimented with leaving the `
 
 You can see the process in `lcd.py#select_column()`.
 
+```python
+def select_column(col):
+    if _defer: return
+    if col < 20:
+        _left_bit = 1
+        _right_bit = 0
+    else:
+        _left_bit = 0
+        _right_bit = 1
+    col = col % 20
+    col_arr=_byte_to_arr(col)
+    GPIO.output(_A, _zeroes)
+    GPIO.output(_D, col_arr)
+    GPIO.output(_LEFT_SEL_, not _left_bit)
+    GPIO.output(_RIGHT_SEL_, not _right_bit)
+    GPIO.output(_WRITE_, 0)
+    GPIO.output(_COL_ADD_SEL_, 0)
+    _usleep(_DELAY)
+    GPIO.output(_COL_ADD_SEL_, 1)
+    GPIO.output(_WRITE_, 1)
+    GPIO.output(_LEFT_SEL_, 1)
+    GPIO.output(_RIGHT_SEL_, 1)
+```
+
 ### `WRITE_`
 
 The `WRITE_` select is pulled low once the column is selected and the A0-7 and D0-7 pins are set. It must be preceded by one of the `LEFT_SEL_` or `RIGHT_SEL_` pins being pulled low. Then all pins are pulled high and the data is written.
 
 You can see the process in `lcd.py#write_byte()`.
+
+```python
+def write_byte(byte, row, col=None):
+    if col != None: select_column(col)
+    row_arr = _byte_to_arr(row)
+    byte_arr = _byte_to_arr(byte)
+    GPIO.output(_A, row_arr)
+    GPIO.output(_D, byte_arr)
+    GPIO.output(_LEFT_SEL_, not _left_bit)
+    GPIO.output(_RIGHT_SEL_, not _right_bit)
+    GPIO.output(_WRITE_, 0)
+    _usleep(_DELAY)
+    GPIO.output(_WRITE_, 1)
+    GPIO.output(_LEFT_SEL_, 1)
+    GPIO.output(_RIGHT_SEL_, 1)
+```
 
 #### Reading the display
 
@@ -161,6 +201,28 @@ This is accomplished by 'latching' in the column with `COL_ADD_SEL_` and then se
 See the section on `Spurious Display Read / Write Issues`. Ultimately, I used a buffering scheme that allowed reading from the RPi / Python memory rather than the display. It proved to be much more accurate.
 
 You can see the process in `lcd.py#read_byte()`
+
+```python
+def read_byte(row, col=None):
+    if col != None: select_column(col)
+    row_arr = _byte_to_arr(row)
+    GPIO.output(_A, row_arr)
+    GPIO.output(_LEFT_SEL_, not _left_bit)
+    GPIO.output(_RIGHT_SEL_, not _right_bit)
+    _set_inputs() # change D0-D7 to inputs
+    byte = GPIO.input(_D[0])
+    byte += GPIO.input(_D[1]) << 1
+    byte += GPIO.input(_D[2]) << 2
+    byte += GPIO.input(_D[3]) << 3
+    byte += GPIO.input(_D[4]) << 4
+    byte += GPIO.input(_D[5]) << 5
+    byte += GPIO.input(_D[6]) << 6
+    byte += GPIO.input(_D[7]) << 7
+    GPIO.output(_LEFT_SEL_, 1)
+    GPIO.output(_RIGHT_SEL_, 1)
+    _set_outputs() # restore D0-D7 to outputs
+    return byte
+```
 
 ### Timing and DELAY
 
