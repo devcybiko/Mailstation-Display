@@ -42,7 +42,7 @@ These functions are serviceable, but I've found them to be a bit slow. I offer t
 * Screen-level functions
     * lcd.clear_screen(oddByte=0x00, evenByte=None) - clears the screen to zeroes. Or if oddbyte is specified, clears the screen to that value. And if both oddByte and evenByte are supplied, then the screen alternates with those values (eg: 0x55, 0xaa gives a checkerboard pattern).
     * lcd.print_at(x, y, s, width=None) - prints text at (x,y). If width is not specified, it uses 8-bits per character (40 characters wide.) The character dot matrix is 5x7, so specifying width=5 gives a nice mono-space of up to 53 characters (with a single blank pixel between characters). Specifying width=0 creates a proportionally spaced font of up to 64 characters across.
-    * lcd.display_image(image_array) - loads the display with all the bytes in the supplied array. The array is organized in column-major form as arr[128][40].
+    * lcd.display_image(image_array) - loads the display with all the bytes in the supplied array. The array is organized in row-major form as arr[128][40].
     * lcd.read_image() - (unimplemented) - reads the display
 * Buffering functions
     * for performance reasons, it is better to buffer the writes to the display and then repaint the entire display all at once.
